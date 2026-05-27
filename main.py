@@ -1,11 +1,12 @@
 import click
 import ollama
-import PyPDF2
+import pypdf
 import os
 
 # --- Configuration ---
-DEFAULT_MODEL = 'llama3'
+DEFAULT_MODEL = 'llama3.2'
 MAX_TEXT_LENGTH_FOR_PROMPT = 4000
+NL = chr(10) # Newline character
 
 @click.group()
 def cli():
@@ -21,7 +22,7 @@ def summarize(pdf_path):
     try:
         text_content = ""
         with open(pdf_path, 'rb') as file:
-            reader = PyPDF2.PdfReader(file)
+            reader = pypdf.PdfReader(file)
             num_pages = len(reader.pages)
             click.echo(f"Found {num_pages} page(s) in the PDF.")
             
@@ -29,8 +30,7 @@ def summarize(pdf_path):
                 page = reader.pages[page_num]
                 page_text = page.extract_text()
                 if page_text:
-                    text_content += page_text + "
-"
+                    text_content += page_text + NL
 
         if not text_content.strip():
             click.echo("Error: Could not extract text from the PDF. It might be image-based or empty.")
@@ -46,27 +46,22 @@ def summarize(pdf_path):
             response = ollama.chat(model=DEFAULT_MODEL, messages=[
                 {
                     'role': 'user',
-                    'content': f"Please provide a concise summary of the following document:
-
-{text_content}",
+                    'content': f"Please provide a concise summary of the following document:{NL}{NL}{text_content}",
                 },
             ])
             
             summary = response['message']['content']
-            click.echo("
---- AI Generated Summary ---")
+            click.echo(f"{NL}--- AI Generated Summary ---{NL}")
             click.echo(summary)
 
         except ollama.ResponseError as e:
             click.echo(f"Ollama API Error: {e}")
-            click.echo("Please ensure Ollama is running and the 'llama3' model is available (ollama pull llama3).")
+            click.echo(f"Please ensure Ollama is running and the '{DEFAULT_MODEL}' model is available.")
         except Exception as e:
             click.echo(f"An unexpected error occurred during AI processing: {e}")
 
     except FileNotFoundError:
         click.echo(f"Error: The file '{pdf_path}' was not found.")
-    except PyPDF2.errors.PdfReadError:
-        click.echo(f"Error: Could not read PDF file '{pdf_path}'. It might be encrypted, corrupted, or an unsupported format.")
     except Exception as e:
         click.echo(f"An unexpected error occurred: {e}")
 
