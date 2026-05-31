@@ -1,48 +1,48 @@
 # AI-Powered PDF Summarizer CLI
 
-This project is a command-line interface (CLI) tool that uses AI to summarize PDF documents. It leverages Ollama with the Llama 3.2 model for local AI inference and pypdf for PDF parsing.
+Este projeto é uma ferramenta de interface de linha de comando (CLI) que utiliza IA para sumarizar documentos PDF. Ele utiliza o Ollama com o modelo Llama 3.2 para inferência de IA local e a biblioteca pypdf para a análise (parsing) de PDFs.
 
 ## Setup
 
-1.  **Clone the repository:**
+1.  **Clone o repositório:**
     ```bash
     git clone https://github.com/ingrdsoares/ai_found.git
     cd pdf-summarizer-cli
     ```
-2.  **Create and activate a virtual environment:**
+2.  **Crie e ative um ambiente virtual:**
     ```bash
     python3 -m venv venv
-    source venv/bin/activate
+    source venv/bin/activate # No Windows use: .\venv\Scripts\activate
     ```
-3.  **Install dependencies:**
+3.  **Instale as dependências:**
     ```bash
     pip install ollama pypdf click
     ```
-4.  **Ensure Ollama is running and Llama 3.2 model is available:**
-    Make sure Ollama is running in the background and you have pulled the 'llama3.2' model by running `ollama pull llama3.2`.
+4.  **Certifique-se de que o Ollama está rodando e o modelo Llama 3.2 está disponível:**
+    Certifique-se de que o Ollama está rodando em segundo plano e que você baixou o modelo 'llama3.2' executando `ollama pull llama3.2`.
 
 ## Usage
 
 ```bash
-python main.py summarize <path_to_your_pdf.pdf>
+python main.py summarize <caminho_para_seu_arquivo.pdf>
 ```
 
-**Example:**
+**Exemplo:**
 ```bash
-python main.py summarize ./my_document.pdf
+python main.py summarize ./meu_documento.pdf
 ```
 
 ## Project Structure
 
-*   `venv/`: Python virtual environment.
-*   `main.py`: The main script for the CLI tool.
-*   `.gitignore`: Specifies intentionally untracked files that Git should ignore.
-*   `README.md`: This file, providing project overview and instructions.
+*   `venv/`: Ambiente virtual Python.
+*   `main.py`: O script principal da ferramenta CLI.
+*   `.gitignore`: Especifica os arquivos que o Git deve ignorar.
+*   `README.md`: Este arquivo, fornecendo a visão geral do projeto e instruções.
 
 ## Implementation Details
 
 - **AI Model:** Llama 3.2 (via Ollama)
 - **PDF Engine:** pypdf
 - **CLI Framework:** Click
-- **Text Handling:** Implemented context window truncation (4000 chars) to ensure compatibility with model limits.
+- **Text Handling:** Implementada a truncagem da janela de contexto (4.000 caracteres) para garantir a compatibilidade com os limites do modelo.
 EOF
